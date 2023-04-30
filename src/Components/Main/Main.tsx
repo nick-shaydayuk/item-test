@@ -1,22 +1,15 @@
-import React, { useEffect } from 'react';
+import React, { ChangeEvent, useState } from 'react';
 import AppBar from '@mui/material/AppBar';
-import Button from '@mui/material/Button';
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
 import CssBaseline from '@mui/material/CssBaseline';
-import Grid from '@mui/material/Grid';
-import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Link from '@mui/material/Link';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { useAppDispatch, useAppSelector } from '../../hooks';
-import { fetchProducts } from '../../store/productsSlice';
-import './Main.scss'
+import './Main.scss';
+import Products from '../Products/Products';
+import TextField from '@mui/material/TextField';
 
 function Copyright() {
   return (
@@ -31,20 +24,21 @@ function Copyright() {
   );
 }
 
-const theme = createTheme({
-  
-});
-
-
+const theme = createTheme({});
 
 const Album: React.FC = () => {
-  const dispatch = useAppDispatch();
+  const [searchString, setSearchString] = useState<string>('');
+  const [priceSearch, setPriceSearch] = useState<string>('');
 
-  const { products, loading } = useAppSelector(state => state.productReducer)
+  const handleSetSearchString = (e: ChangeEvent<HTMLInputElement>) => {
+    if (!e.target) return;
+    setSearchString(e.target.value);
+  };
 
-  useEffect(() => {
-    dispatch(fetchProducts());
-  }, [dispatch]);
+  const handleSetPriceSearch = (e: ChangeEvent<HTMLInputElement>) => {
+    if (!e.target) return;
+    setPriceSearch(e.target.value);
+  };
 
   return (
     <ThemeProvider theme={theme}>
@@ -56,7 +50,7 @@ const Album: React.FC = () => {
           </Typography>
         </Toolbar>
       </AppBar>
-      <main className='main'>
+      <main className="main">
         <Box
           sx={{
             bgcolor: 'background.paper',
@@ -72,76 +66,54 @@ const Album: React.FC = () => {
               color="text.primary"
               gutterBottom
             >
-              Album layout
+              Random Marketplace
             </Typography>
             <Typography variant="h5" align="center" color="text.secondary" paragraph>
-              Something short and leading about the collection below—its contents,
-              the creator, etc. Make it short and sweet, but not too short so folks
-              don&apos;t simply skip over it entirely.
+              Random Marketplace is an exciting online shopping destination that offers a vast and
+              diverse selection of products from around the world. From fashion and beauty to home
+              decor and electronics, this marketplace has something for everyone
             </Typography>
-            <Stack
-              sx={{ pt: 4 }}
-              direction="row"
-              spacing={2}
-              justifyContent="center"
-            >
-              <Button variant="contained">Main call to action</Button>
-              <Button variant="outlined">Secondary action</Button>
-            </Stack>
+          </Container>
+          <Container maxWidth="md">
+            <TextField
+              id="outlined-basic"
+              label="Search"
+              variant="outlined"
+              value={searchString}
+              onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                handleSetSearchString(e);
+              }}
+              fullWidth
+              margin="normal"
+            />
+            <TextField
+              id="outlined-basic"
+              label="Price"
+              variant="outlined"
+              value={priceSearch}
+              inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
+              onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                handleSetPriceSearch(e);
+              }}
+              fullWidth
+            />
           </Container>
         </Box>
         <Container sx={{ py: 8 }} maxWidth="md">
-          <Grid container spacing={4} className='products'>
-            {!loading && products.products.map((product: any) => (
-              <Grid item key={product.id} xs={12} sm={6} md={4}>
-                <Card
-                  sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}
-                  className='card'
-                >
-                  <CardMedia
-                    component="img"
-                    sx={{
-                       16:9
-                    }}
-                    image={product.thumbnail}
-                    height={200}
-                    className='card__image'
-                    alt="random"
-                  />
-                  <CardContent sx={{ flexGrow: 1 }}>
-                    <Typography gutterBottom variant="h5" component="h2">
-                      {product.title}
-                    </Typography>
-                    <Typography>
-                      {product.description}
-                    </Typography>
-                  </CardContent>
-                  <CardActions>
-                    <Button size="small">View</Button>
-                    <Button size="small">Edit</Button>
-                  </CardActions>
-                </Card>
-              </Grid>
-            ))}
-          </Grid>
+          <Products searchString={searchString} priceSearch={priceSearch} />
         </Container>
       </main>
       <Box sx={{ bgcolor: 'background.paper', p: 6 }} component="footer">
         <Typography variant="h6" align="center" gutterBottom>
           Footer
         </Typography>
-        <Typography
-          variant="subtitle1"
-          align="center"
-          color="text.secondary"
-          component="p"
-        >
+        <Typography variant="subtitle1" align="center" color="text.secondary" component="p">
           Something here to give the footer a purpose!
         </Typography>
         <Copyright />
       </Box>
     </ThemeProvider>
   );
-}
+};
 
-export default Album
+export default Album;

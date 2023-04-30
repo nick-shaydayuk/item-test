@@ -1,12 +1,13 @@
-/* .main {
-  .products {
-    
+.main {
+  .search__input {
+    width: 100%;
+  }
+}
+
+/* .card {
+  .card__image {
+    object-fit: contain;
   }
 } */
 
-.card {
-  .card__imgage {
-    object-fit: contain;
-    display: none;
-  }
-}
+
