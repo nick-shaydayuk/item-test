@@ -1,19 +1,21 @@
-import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { decrement, increment } from './features/counterSlice';
-import './App.css';
+import React, { useEffect } from 'react';
+import './App.scss';
+import Main from './Components/Main/Main';
+import { useAppDispatch, useAppSelector } from './hooks';
+import { fetchProducts } from './store/productsSlice';
 
 function App() {
-  const count = useSelector((state: any) => state.counter.value);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
+  const { products } = useAppSelector(state => state.productReducer)
+
+  useEffect(() => {
+    dispatch(fetchProducts());
+  }, [dispatch]);
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <button onClick={() => dispatch(increment())}>+</button>
-        <h2>{count}</h2>
-        <button onClick={() => dispatch(decrement())}>-</button>
-      </header>
+    <div className='App'>
+      <Main />
+      {JSON.stringify(products, null, 2)}
     </div>
   );
 }
