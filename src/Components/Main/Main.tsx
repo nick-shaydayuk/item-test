@@ -10,6 +10,8 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import './Main.scss';
 import Products from '../Products/Products';
 import TextField from '@mui/material/TextField';
+import Stack from '@mui/material/Stack';
+
 
 function Copyright() {
   return (
@@ -27,17 +29,25 @@ function Copyright() {
 const theme = createTheme({});
 
 const Album: React.FC = () => {
+
+
   const [searchString, setSearchString] = useState<string>('');
-  const [priceSearch, setPriceSearch] = useState<string>('');
+  const [minPriceSearch, setMinPriceSearch] = useState<string>('');
+  const [maxPriceSearch, setMaxPriceSearch] = useState<string>('');
 
   const handleSetSearchString = (e: ChangeEvent<HTMLInputElement>) => {
     if (!e.target) return;
     setSearchString(e.target.value);
   };
 
-  const handleSetPriceSearch = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleSetMinPriceSearch = (e: ChangeEvent<HTMLInputElement>) => {
     if (!e.target) return;
-    setPriceSearch(e.target.value);
+    setMinPriceSearch(e.target.value);
+  };
+
+  const handleSetMaxPriceSearch = (e: ChangeEvent<HTMLInputElement>) => {
+    if (!e.target) return;
+    setMaxPriceSearch(e.target.value);
   };
 
   return (
@@ -79,21 +89,35 @@ const Album: React.FC = () => {
               fullWidth
               margin="normal"
             />
+            <Stack sx={{ pt: 4 }} direction="row" spacing={2} justifyContent="center">
             <TextField
               id="outlined-basic"
-              label="Price"
+              label="Price minimum"
               variant="outlined"
-              value={priceSearch}
+              value={minPriceSearch}
               inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
               onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                handleSetPriceSearch(e);
+                handleSetMinPriceSearch(e);
               }}
               fullWidth
             />
+            <TextField
+              id="outlined-basic"
+              label="Price maximum"
+              variant="outlined"
+              value={maxPriceSearch}
+              inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
+              onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                handleSetMaxPriceSearch(e);
+              }}
+              fullWidth
+            />
+            </Stack>
+
           </Container>
         </Box>
         <Container sx={{ py: 8 }} maxWidth="md">
-          <Products searchString={searchString} priceSearch={priceSearch} />
+          <Products searchString={searchString} minPriceSearch={minPriceSearch} maxPriceSearch={maxPriceSearch} />
         </Container>
       </main>
       <Box sx={{ bgcolor: 'background.paper', p: 6 }} component="footer">

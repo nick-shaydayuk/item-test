@@ -8,7 +8,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { Product, updateProduct } from '../../store/productsSlice';
 import Button from '@mui/material/Button';
 import { Stack, TextField } from '@mui/material';
-import { useAppDispatch } from '../../hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 import { ChangeEvent, useState } from 'react';
 
 const EditView = () => {
@@ -16,6 +16,7 @@ const EditView = () => {
   const location = useLocation();
   const product: Product = location.state;
   const dispatch = useAppDispatch();
+  const { loading, error } = useAppSelector((state) => state.productReducer);
 
   const [title, setTitle] = useState(product.title);
   const [thumbnail, setThumbnail] = useState(product.thumbnail);
@@ -51,8 +52,14 @@ const EditView = () => {
         description: description,
         price: price,
       })
-    );
-    navigate('/');
+    )
+    .then((res) => {
+      console.log(res);
+      if (res.meta.requestStatus === 'rejected') {
+        return
+      }
+        navigate('/');
+      })
   };
 
   return (
@@ -132,6 +139,7 @@ const EditView = () => {
           </Grid>
         </Container>
       </Stack>
+      {error ? <>{error}</> : <></>}
       <Container maxWidth="sm">
         <Stack sx={{ pt: 4 }} direction="row" spacing={2} justifyContent="center">
           <Button

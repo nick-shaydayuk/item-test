@@ -1,56 +1,45 @@
-import React, { useEffect } from 'react';
 import Grid from '@mui/material/Grid';
-import { useAppDispatch, useAppSelector } from '../../hooks';
-import {
-  Product,
-  ProductState,
-  fetchProducts,
-  fetchProductsWithSearch,
-} from '../../store/productsSlice';
+import { useAppSelector } from '../../hooks';
+import { Product, ProductState } from '../../store/productsSlice';
 import ProductCard from '../Card/Card';
 import { RootState } from '../../store';
 
 type ProductsProps = {
   searchString: string;
-  priceSearch: string;
+  minPriceSearch: string;
+  maxPriceSearch: string;
 };
 
-const Products = ({ searchString, priceSearch }: ProductsProps) => {
-  const dispatch = useAppDispatch();
+const Products = ({ searchString, minPriceSearch, maxPriceSearch }: ProductsProps) => {
 
-  const selectProductsByPrice = (state: RootState, price: string) => {
-    const priceNumber = parseInt(price)
-    if (!price) {
-      return {
-        products: {
-          products: state.productReducer.products.products
-        },
-        loading: state.productReducer.loading,
-        error: state.productReducer.error
-      } as ProductState;
-    }
+  const selectProductsByPrice = (
+    state: RootState,
+    minPrice: string,
+    maxPrice: string,
+    searchString: string
+  ) => {
+    const minPriceNumber = minPrice ? parseInt(minPrice) : 0;
+    const maxPriceNumber = maxPrice ? parseInt(maxPrice) : 99999;
+
     return {
       products: {
-        products: state.productReducer.products.products.filter((product) => product.price === priceNumber),
+        products: state.productReducer.products.products.filter(
+          (product) =>
+            product.price >= minPriceNumber &&
+            product.price <= maxPriceNumber &&
+            (product.title.toLowerCase() || product.description.toLowerCase()).includes(
+              searchString.toLowerCase()
+            )
+        ),
       },
       loading: state.productReducer.loading,
-      error: state.productReducer.error
+      error: state.productReducer.error,
     } as ProductState;
   };
 
-  const { products, loading } = useAppSelector((state) => selectProductsByPrice(state, priceSearch));
-
-  useEffect(() => {}, [priceSearch, products.products]);
-
-  useEffect(() => {
-    if (!searchString.length) return;
-    dispatch(fetchProductsWithSearch(searchString));
-  }, [searchString, dispatch]);
-
-  useEffect(() => {
-    if (searchString.length) return;
-    dispatch(fetchProducts());
-  }, [dispatch, searchString]);
+  const { products, loading } = useAppSelector((state) =>
+    selectProductsByPrice(state, minPriceSearch, maxPriceSearch, searchString)
+  );
 
   return (
     <Grid container spacing={4} className="products">
