@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import Grid from '@mui/material/Grid';
-import { useAppDispatch, useAppSelector, useDebounce } from '../../hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 import {
   Product,
   ProductState,
@@ -44,10 +44,7 @@ const Products = ({ searchString, priceSearch }: ProductsProps) => {
 
   useEffect(() => {
     if (!searchString.length) return;
-    function debouncedDispatch() {
-      dispatch(fetchProductsWithSearch(searchString));
-    }
-    useDebounce(debouncedDispatch(), 500)
+    dispatch(fetchProductsWithSearch(searchString));
   }, [searchString, dispatch]);
 
   useEffect(() => {

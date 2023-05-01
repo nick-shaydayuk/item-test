@@ -1,8 +1,8 @@
 import React, { ChangeEvent, useState } from 'react';
-import AppBar from '@mui/material/AppBar';
+
 import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
+
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Link from '@mui/material/Link';
@@ -15,8 +15,8 @@ function Copyright() {
   return (
     <Typography variant="body2" color="text.secondary" align="center">
       {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
+      <Link color="inherit" href="https://github.com/nick-shaydayuk/item-test">
+        GitHub
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
@@ -43,13 +43,6 @@ const Album: React.FC = () => {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <AppBar position="relative">
-        <Toolbar>
-          <Typography variant="h6" color="inherit" noWrap>
-            Album layout
-          </Typography>
-        </Toolbar>
-      </AppBar>
       <main className="main">
         <Box
           sx={{
@@ -108,7 +101,7 @@ const Album: React.FC = () => {
           Footer
         </Typography>
         <Typography variant="subtitle1" align="center" color="text.secondary" component="p">
-          Something here to give the footer a purpose!
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit.
         </Typography>
         <Copyright />
       </Box>
