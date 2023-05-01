@@ -42,7 +42,6 @@ export const updateProduct = createAsyncThunk(
       const res = await axios.patch<Product>(
         `https://dummyjson.com/products/${product.id}?select=id,title,thumbnail,description,price`,
         {
-          id: product.id, // TODO: delete this
           title: product.title,
           thumbnail: product.thumbnail,
           description: product.description,

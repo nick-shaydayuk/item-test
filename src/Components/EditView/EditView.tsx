@@ -52,20 +52,18 @@ const EditView = () => {
         description: description,
         price: price,
       })
-    )
-    .then((res) => {
-      console.log(res);
+    ).then((res) => {
       if (res.meta.requestStatus === 'rejected') {
-        return
+        return;
       }
-        navigate('/');
-      })
+      navigate('/');
+    });
   };
 
   return (
     <main>
       <Stack sx={{ pt: 4 }} direction="row" spacing={2} justifyContent="center">
-        <Container maxWidth="sm">
+        <Stack>
           <Grid item xs={12} sm={6} md={4}>
             <Card
               sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}
@@ -90,8 +88,8 @@ const EditView = () => {
               </CardContent>
             </Card>
           </Grid>
-        </Container>
-        <Container maxWidth="sm">
+        </Stack>
+        <Stack maxWidth="sm">
           <Grid item xs={12} sm={6} md={4}>
             <TextField
               id="outlined-basic"
@@ -137,7 +135,7 @@ const EditView = () => {
               margin="normal"
             />
           </Grid>
-        </Container>
+        </Stack>
       </Stack>
       {error ? <>{error}</> : <></>}
       <Container maxWidth="sm">
