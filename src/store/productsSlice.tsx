@@ -10,6 +10,14 @@ export type Product = {
   price: number;
 };
 
+export type ProductRequest = {
+  id: number;
+  title: string;
+  thumbnail: string;
+  description: string;
+  price: number;
+}
+
 type ProductResponse = {
   products: Product[];
 };
@@ -102,7 +110,7 @@ export const fetchProductsWithSearch = (search: string) => async (dispatch: AppD
   }
 };
 
-export const updateProduct = (product: Product) => async (dispatch: AppDispatch) => {
+export const updateProduct = (product: ProductRequest) => async (dispatch: AppDispatch) => {
   try {
     dispatch(productSlice.actions.updateProduct());
     const res = await axios.patch<Product>(

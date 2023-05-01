@@ -7,8 +7,9 @@ import Typography from '@mui/material/Typography';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Product, updateProduct } from '../../store/productsSlice';
 import Button from '@mui/material/Button';
-import { Stack } from '@mui/material';
+import { Stack, TextField } from '@mui/material';
 import { useAppDispatch } from '../../hooks';
+import { ChangeEvent, useState } from 'react';
 
 const EditView = () => {
   const navigate = useNavigate();
@@ -16,44 +17,121 @@ const EditView = () => {
   const product: Product = location.state;
   const dispatch = useAppDispatch();
 
+  const [title, setTitle] = useState(product.title);
+  const [thumbnail, setThumbnail] = useState(product.thumbnail);
+  const [description, setDescription] = useState(product.description);
+  const [price, setPrice] = useState(product.price);
+
+  const handleUpdateValue = (e: ChangeEvent<HTMLInputElement>, key: string) => {
+    switch (key) {
+      case 'title':
+        setTitle(e.target.value);
+        break;
+      case 'thumbnail':
+        setThumbnail(e.target.value);
+        break;
+      case 'description':
+        setDescription(e.target.value);
+        break;
+      case 'price':
+        setPrice(parseInt(e.target.value));
+        break;
+
+      default:
+        break;
+    }
+  };
+
   const onUpdateProduct = () => {
     dispatch(
       updateProduct({
-        id: '1',
-        title: 'string',
-        thumbnail: 'string',
-        description: 'string',
-        price: 1,
+        id: parseInt(product.id),
+        title: title,
+        thumbnail: thumbnail,
+        description: description,
+        price: price,
       })
     );
-    navigate('/')
+    navigate('/');
   };
 
   return (
     <main>
-      <Container maxWidth="sm">
-        {JSON.stringify(product)}
-        <Grid item xs={12} sm={6} md={4}>
-          <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }} className="card">
-            <CardMedia
-              component="img"
-              sx={{
-                16: 9,
+      <Stack sx={{ pt: 4 }} direction="row" spacing={2} justifyContent="center">
+        <Container maxWidth="sm">
+          <Grid item xs={12} sm={6} md={4}>
+            <Card
+              sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}
+              className="card"
+            >
+              <CardMedia
+                component="img"
+                sx={{
+                  16: 9,
+                }}
+                image={thumbnail}
+                height={200}
+                className="card__image"
+                alt="random"
+              />
+              <CardContent sx={{ flexGrow: 1 }}>
+                <Typography gutterBottom variant="h5" component="h2">
+                  {title}
+                </Typography>
+                <Typography>{description}</Typography>
+                <Typography fontSize={14}>Price is: {price}$</Typography>
+              </CardContent>
+            </Card>
+          </Grid>
+        </Container>
+        <Container maxWidth="sm">
+          <Grid item xs={12} sm={6} md={4}>
+            <TextField
+              id="outlined-basic"
+              label="Title"
+              variant="outlined"
+              value={title}
+              onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                handleUpdateValue(e, 'title');
               }}
-              image={product.thumbnail}
-              height={200}
-              className="card__image"
-              alt="random"
+              fullWidth
             />
-            <CardContent sx={{ flexGrow: 1 }}>
-              <Typography gutterBottom variant="h5" component="h2">
-                {product.title}
-              </Typography>
-              <Typography>{product.description}</Typography>
-            </CardContent>
-          </Card>
-        </Grid>
-      </Container>
+            <TextField
+              id="outlined-basic"
+              label="Thumbnail"
+              variant="outlined"
+              value={thumbnail}
+              onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                handleUpdateValue(e, 'thumbnail');
+              }}
+              fullWidth
+              margin="normal"
+            />
+            <TextField
+              id="outlined-basic"
+              label="Description"
+              variant="outlined"
+              value={description}
+              onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                handleUpdateValue(e, 'description');
+              }}
+              fullWidth
+              margin="normal"
+            />
+            <TextField
+              id="outlined-basic"
+              label="Price"
+              variant="outlined"
+              value={price}
+              onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                handleUpdateValue(e, 'price');
+              }}
+              fullWidth
+              margin="normal"
+            />
+          </Grid>
+        </Container>
+      </Stack>
       <Container maxWidth="sm">
         <Stack sx={{ pt: 4 }} direction="row" spacing={2} justifyContent="center">
           <Button
