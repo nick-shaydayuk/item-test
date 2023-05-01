@@ -16,7 +16,7 @@ const EditView = () => {
   const location = useLocation();
   const product: Product = location.state;
   const dispatch = useAppDispatch();
-  const { loading, error } = useAppSelector((state) => state.productReducer);
+  const { error } = useAppSelector((state) => state.productReducer);
 
   const [title, setTitle] = useState(product.title);
   const [thumbnail, setThumbnail] = useState(product.thumbnail);
