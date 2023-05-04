@@ -11,7 +11,6 @@ type ProductsProps = {
 };
 
 const Products = ({ searchString, minPriceSearch, maxPriceSearch }: ProductsProps) => {
-
   const selectProductsByPrice = (
     state: RootState,
     minPrice: string,
@@ -27,9 +26,8 @@ const Products = ({ searchString, minPriceSearch, maxPriceSearch }: ProductsProp
           (product) =>
             product.price >= minPriceNumber &&
             product.price <= maxPriceNumber &&
-            (product.title.toLowerCase() || product.description.toLowerCase()).includes(
-              searchString.toLowerCase()
-            )
+            (product.description.toLowerCase().includes(searchString.toLowerCase()) ||
+              product.title.toLowerCase().includes(searchString.toLowerCase()))
         ),
       },
       loading: state.productReducer.loading,
